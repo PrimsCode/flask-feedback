@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block TITLE %}Add Feedback{% endblock %}
+
+{% block BODY %}
+
+<h1 class="display1">Add Feedback</h1>
+<p>Let us know the truth!</p>
+
+<form method="POST">
+    {{form.hidden_tag()}}
+    
+    {% for field in form if field.widget.input_type != 'hidden' %}
+    <div class="form-group">
+        <p>
+            {{field.label}}
+            {{field}}
+
+            {% for error in field.errors %}
+            {{error}}
+            {% endfor %}
+        </p>
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+
+</form>
+
+<div class="container p-3">
+    <h2>Feedbacks</h2>
+    <ul>
+        {% for feedback in feedbacks %}
+        <li class="p-2"><b>{{feedback.title}}:</b> {{feedback.content}} <i>by {{feedback.username}}</i>
+        
+        {% if session['user_id'] == feedback.user.id %}
+            <a class ="btn btn-sm btn-danger" href="/feedback/{{feedback.id}}/delete">X</a>
+        {% endif %}
+        
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+{% endblock %}
